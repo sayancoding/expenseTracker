@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface RecordService {
     public List<Record> findAll();
+    public List<Record> findAllByUid(Long uId);
     public Record findById(Long id);
+    public Record findByIdAndUid(Long uId,Long recordId);
     public String save(Record record);
-
+    public String delete(Long recordId);
 }

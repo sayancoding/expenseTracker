@@ -1,6 +1,7 @@
 package com.arrowsModule.expenseTracker.service.impl;
 
 import com.arrowsModule.expenseTracker.dao.CategoryDao;
+import com.arrowsModule.expenseTracker.exception.NotFoundException;
 import com.arrowsModule.expenseTracker.model.Category;
 import com.arrowsModule.expenseTracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(Long id) {
-        return categoryDao.findById(id).orElseThrow();
+    public Category findById(Long id) throws NotFoundException {
+        return categoryDao.findById(id).orElseThrow(()->new NotFoundException("No such category"));
     }
 
     @Override
-    public List<Category> findAllByUserId(Long uId) {
-        return categoryDao.findAllByUserId(uId);
+    public List<Category> findAllByUserId(Long uId) throws NotFoundException {
+        return categoryDao.findAllByUserId(uId).orElseThrow(()->new NotFoundException("No such user"));
     }
 
     @Override
@@ -37,8 +38,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String delete(Long catId) {
-        Category category = categoryDao.getById(catId);
+    public String delete(Long catId) throws NotFoundException {
+        Category category = categoryDao.findById(catId).orElseThrow(()->new NotFoundException("No such user"));
         categoryDao.delete(category);
         return "Category has been removed";
     }

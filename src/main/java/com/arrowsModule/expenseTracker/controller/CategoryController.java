@@ -1,6 +1,7 @@
 package com.arrowsModule.expenseTracker.controller;
 
 import com.arrowsModule.expenseTracker.dto.Response;
+import com.arrowsModule.expenseTracker.exception.NotFoundException;
 import com.arrowsModule.expenseTracker.model.Category;
 import com.arrowsModule.expenseTracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class CategoryController {
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
     @GetMapping()
-    ResponseEntity<Response> findAll(@RequestParam(name = "uid",required = false) String uId,HttpServletRequest request){
+    ResponseEntity<Response> findAll(@RequestParam(name = "uid",required = false) String uId,HttpServletRequest request) throws NotFoundException {
         List<Category> res;
         if(uId != null && !uId.trim().isEmpty()){
             res = categoryService.findAllByUserId(Long.valueOf(uId));
@@ -35,7 +36,7 @@ public class CategoryController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @DeleteMapping("/{catId}")
-    ResponseEntity<Response> deleteById(@RequestParam Long catId,HttpServletRequest request){
+    ResponseEntity<Response> deleteById(@RequestParam Long catId,HttpServletRequest request) throws NotFoundException {
         String res = categoryService.delete(catId);
         Response response = new Response(request.getRequestURI(), res, HttpStatus.OK.value(),HttpStatus.OK.name() );
         return new ResponseEntity<>(response,HttpStatus.OK);

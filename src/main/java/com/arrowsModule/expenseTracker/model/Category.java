@@ -43,4 +43,11 @@ public class Category {
     public void setuId(Long uId) {
         this.uId = uId;
     }
+
+    public Category(Long catId, String catName, String type, Long uId) {
+        this.catId = catId;
+        this.catName = catName;
+        this.type = type;
+        this.uId = uId;
+    }
 }
